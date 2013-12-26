@@ -32,10 +32,11 @@ public class MyAnalyzerTest extends MyAnalyzer {
   @Test
   public void testCreateComponents() throws IOException {
     TokenStreamComponents tsc = analyzer.createComponents("text",
-        new StringReader("今日は晴れですが、明日は雨です。"));
+        new StringReader("今日は晴れですが、明日は雨です。ABC"));
     Tokenizer tokenizer = tsc.getTokenizer();
     tokenizer.reset();
-
+    System.out.println("*** tokenizerのテスト ***");
+    System.out.println("原文：今日は晴れですが、明日は雨です。ABC");
     // Tokenizerの想定値
     List<String> expectedList = new ArrayList<String>() {
       {
@@ -48,6 +49,7 @@ public class MyAnalyzerTest extends MyAnalyzer {
         add("は");
         add("雨");
         add("です");
+        add("ABC");
       }
     };
     Iterator expectedIterator = expectedList.iterator();
@@ -66,8 +68,12 @@ public class MyAnalyzerTest extends MyAnalyzer {
     // tokenStreamはtokenizerを含むため先にtokenizerがcloseされると困るため
     // ここでもう一度createComponentsをしてnewする。
     tsc = analyzer.createComponents("text",
-        new StringReader("今日は晴れですが、明日は雨です。"));
+        new StringReader("今日は晴れですが、明日は雨です。ABC"));
     TokenStream tokenStream = tsc.getTokenStream();
+    
+    System.out.println("*** tokenFilterのテスト ***");
+    System.out.println("原文：今日は晴れですが、明日は雨です。ABC");
+
     // tokenStreamはStopFilter、KatakanaStemFilter、LowerCaseFilter他が効いている
     expectedList = new ArrayList<String>() {
       {
@@ -75,6 +81,7 @@ public class MyAnalyzerTest extends MyAnalyzer {
         // add("晴れ"); // 晴れはStopFilterで除去される
         add("明日");
         add("雨");
+        add("abc");
       }
     };
     expectedIterator = expectedList.iterator();
