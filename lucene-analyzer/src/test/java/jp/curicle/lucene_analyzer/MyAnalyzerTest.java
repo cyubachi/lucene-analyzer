@@ -96,6 +96,7 @@ public class MyAnalyzerTest extends MyAnalyzer {
     assertFalse(expectedIterator.hasNext());
     tokenStream.end();
     tokenStream.close();
+    System.out.println("*** 終了 ***");
 
   }
 
